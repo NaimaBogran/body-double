@@ -9,6 +9,9 @@ const { ensureAuth, ensureGuest } = require("../middleware/auth");
 const userPrefrencesController = require("../controllers/userPrefrences");
 const matchController = require("../controllers/matchUsers");
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -33,6 +36,9 @@ router.post("/match", ensureAuth, (req, res) =>{
     return res.redirect("/match"); //in case it does a POST /match, turns into a GET /match
 })
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
