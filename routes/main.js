@@ -10,6 +10,9 @@ const userPrefrencesController = require("../controllers/userPrefrences");
 const matchController = require("../controllers/matchUsers");
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -37,6 +40,9 @@ router.post("/match", ensureAuth, (req, res) =>{
 })
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
