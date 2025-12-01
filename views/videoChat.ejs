@@ -255,15 +255,28 @@ let localStream;
 let peerConnection;
 
 const rtcConfig = {
-    iceServers: [
-        { urls: "stun:stun.l.google.com:19302" },
-        {
-            urls: "turn:relay1.expressturn.com:3478",
-            username: "efQ8YHkNg1NtQxel3I",
-            credential: "Yp8Qk7x3QV0S4Dxi"
-        }
-    ]
+  iceServers: [
+    {
+      urls: "stun:global.stun.twilio.com:3478"
+    },
+    {
+      urls: "turn:global.turn.twilio.com:3478?transport=udp",
+      username: "9c48286eb70ac16f58c5f0f93bea20fc50af392934a639eb28fdbb62fc9bd860",
+      credential: "QGFX3HTGX5Bk3abs8j0/xWBBCXSppIGiaP29/PiKxXc="
+    },
+    {
+      urls: "turn:global.turn.twilio.com:3478?transport=tcp",
+      username: "9c48286eb70ac16f58c5f0f93bea20fc50af392934a639eb28fdbb62fc9bd860",
+      credential: "QGFX3HTGX5Bk3abs8j0/xWBBCXSppIGiaP29/PiKxXc="
+    },
+    {
+      urls: "turn:global.turn.twilio.com:443?transport=tcp",
+      username: "9c48286eb70ac16f58c5f0f93bea20fc50af392934a639eb28fdbb62fc9bd860",
+      credential: "QGFX3HTGX5Bk3abs8j0/xWBBCXSppIGiaP29/PiKxXc="
+    }
+  ]
 };
+
 
 // gets local media and then, if caller, start the call
 async function setupLocalMedia() {
