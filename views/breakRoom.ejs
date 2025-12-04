@@ -1,6 +1,90 @@
 <%- include('partials/loggedInHeader') -%>
 
+<style>
+  /* Override the global main{} layout just for this page */
+  main.break-page {
+    margin: 0;                          /* kill the 100px global margin */
+    padding: 120px 20px;                /* vertical breathing room */
+    background: linear-gradient(135deg, #faf7ff, #fff4e8);
+    border-radius: 0;
+    min-height: calc(100vh - 80px);     /* fill the screen under the header */
+    display: flex;
+    justify-content: center;            /* center inner block horizontally */
+    align-items: flex-start;            /* start from top */
+  }
+
+  /* Centered “card” that holds all the content */
+  .break-inner {
+    width: 100%;
+    max-width: 800px;
+    text-align: center;
+  }
+
+  .break-inner h1 {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+
+  .break-inner p {
+    font-size: 20px;
+    margin-bottom: 8px;
+  }
+
+  .timer {
+    font-size: 80px;
+    font-weight: 700;
+    color: rgb(51, 50, 148);
+    margin: 40px 0 32px;
+    text-shadow: 0 0 20px rgba(51, 50, 148, 0.25);
+  }
+
+  #breakActions p {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+
+  .break-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .break-buttons .btn {
+    background: rgb(51, 50, 148);
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    font-size: 18px;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(51, 50, 148, 0.35);
+    transition: 0.2s ease;
+  }
+
+  .break-buttons .btn:hover {
+    background: rgb(35, 35, 110);
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 768px) {
+    .break-inner h1 {
+      font-size: 36px;
+    }
+    .timer {
+      font-size: 60px;
+    }
+    .break-buttons .btn {
+      width: 100%;
+      max-width: 320px;
+    }
+  }
+</style>
 <main class="break-page">
+    <div class="break-inner">
+    <img src="img/breakRoom.jpg" style=" width: 150px; height: 250px; aspect-ratio: 1 / 1.2; object-fit: contain; margin: 0 auto 25px; display: block;  background: none !important; padding: 0 !important; border-radius: 0 !important; box-shadow: none !important;">
     <h1>time to take a break</h1>
     <p>
         you just completed a focus session with
@@ -13,9 +97,11 @@
 
     <div id="breakActions" style="display: none; margin-top: 16px;">
         <p>your break is over. what would you like to do?</p>
-
+        <div class="break-buttons">
         <button id="stayBtn" class="btn">continue with the same partner</button>
         <button id="newBtn" class="btn">find a new partner</button>
+    </div>
+    </div>
     </div>
 </main>
 
@@ -60,21 +146,21 @@
     });
 
     // Server result handler
-    socket.on("breakResult", ({ action }) => {
-        console.log("breakResult:", action);
+    socket.on("breakResult", ({ action, isCaller }) => {
+    console.log("breakResult:", action, "isCaller:", isCaller);
 
-        if (action === "new") {
-            // either one or both chose "new"
-            window.location.href = "/match";
-        } else if (action === "stay") {
-            // both chose "stay" → go back to the mode we came from
-            if (myMode === "video") {
-                window.location.href =
-                    `/videoChat/${roomId}?partnerName=${encodeURIComponent(partnerName)}&isCaller=false`;
-            } else {
-                window.location.href =
-                    `/textChat/${roomId}?partnerName=${encodeURIComponent(partnerName)}`;
-            }
-        }
-    });
+    if (action === "new") {
+        window.location.href = "/match";
+        return;
+    }
+
+    // both chose "stay"
+    if (myMode === "video") {
+        window.location.href =
+             `/videoChat/${roomId}?partnerName=${encodeURIComponent(partnerName)}&isCaller=${isCaller}&fresh=1`;
+    } else {
+        window.location.href = "/match";
+    }
+});
+
 </script>

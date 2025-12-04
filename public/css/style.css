@@ -1,190 +1,321 @@
 /*****************************************
-/* CSS
-/*******************************************/
+/* GLOBAL COLORS & TOKENS
+/*****************************************/
+:root {
+  --cream: rgb(253, 245, 232);
+  --light-gray: rgb(242, 242, 242);
+  --soft-purple: rgb(204, 183, 246);
+  --purple: rgb(51, 50, 148);
+  --purple-dark: rgb(23, 23, 67);
 
-/* Box Model Hack */
-*{
-  box-sizing: border-box;
+  --text-dark: #000;
+  --text-light: #fff;
+
+  --radius-card: 12px;
+  --radius-pill: 50px;
 }
 
-/******************************************
-/* LAYOUT
-/*******************************************/
-img{
+/*****************************************
+/* RESET / BASE
+/*****************************************/
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  overflow-x: hidden;
+}
+
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+  font-family: "Inter", sans-serif;
+  background: var(--light-gray);
+  color: var(--text-dark);
+}
+
+img {
   display: block;
   margin: 0 auto;
+  max-width: 100%;
+  height: auto;
 }
 
-/* 
-/******************************************
-/* ADDITIONAL STYLES
-/*******************************************/
-
-/******************************************
-/* HEADER STYLES
-/*******************************************/
-
-
-header{
-    background-color: rgb(253, 245, 232);
-    height: 100px;
+a {
+  text-decoration: none;
+  color: inherit;
 }
 
-.logo{
-    float: left;
-    padding-left: 50px;
+/*****************************************
+/* TYPOGRAPHY
+/*****************************************/
+h1,
+h2,
+h3,
+h4 {
+  font-family: "Figtree", sans-serif;
+  font-weight: 400;
 }
 
-header li, select, .headerButtons{
-    display: inline;
-  font-family: 'Inter', sans-serif;
-    font-size:25px;
+h1 {
+  font-size: 70px;
 }
 
-ul{
-    padding-top: 20px;
+h2 {
+  font-weight: 300;
+  font-size: 70px;
 }
 
-li, select{
-    padding-left: 20px;
+h4 {
+  font-weight: 700;
+  font-size: 20px;
 }
 
-a{
-    text-decoration: none;
-    color: black;
+/*****************************************
+/* GENERIC COMPONENTS (from old global.css)
+/*****************************************/
+.card {
+  background: var(--cream);
+  padding: 30px;
+  border-radius: var(--radius-card);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.headerButtons{
-margin-left: 40%;
+.btn {
+  font-family: "Inter", sans-serif;
+  font-size: 18px;
+  padding: 10px 20px;
+  border-radius: var(--radius-pill);
+  border: none;
+  cursor: pointer;
 }
 
-#login, #signup{
-    margin: 10px;
-    border-radius: 50px;
-    padding: 10px;
-    padding-left: 15px;
-    padding-right: 15px;
-    box-shadow: 0 4px 6px rgb(215, 207, 195);
-    background-color: rgb(253, 245, 232);
-    border: none;
-    font-size: 20px;
+.btn-light {
+  background: var(--cream);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  color: black;
 }
 
-#signup{
-    background-color: rgb(51, 50, 148);
-    box-shadow: 0 4px 6px rgb(23, 23, 67);
+.btn-primary {
+  background: var(--purple);
+  color: white;
+  box-shadow: 0 4px 6px var(--purple-dark);
 }
 
-.signup{
-    color: white;
+.btn-outline-light {
+  background: transparent;
+  border: 1px solid var(--cream);
+  color: var(--cream);
 }
 
-select{
-    border: none;
-    background-color: rgb(253, 245, 232) ;
-    width: 100px;
+input,
+select,
+textarea {
+  padding: 12px;
+  border-radius: var(--radius-card);
+  border: 1px solid #ccc;
+  background: var(--cream);
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
 }
 
+/* Chat boxes (used in text/video chat) */
+.chat-box {
+  background: var(--cream);
+  border-radius: var(--radius-card);
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-height: 400px;
+  overflow-y: auto;
+}
 
-/******************************************
-/* MAIN STYLES
-/*******************************************/
+.chat-message {
+  background: white;
+  padding: 10px 15px;
+  border-radius: var(--radius-card);
+  margin: 10px 0;
+  font-size: 16px;
+}
 
+/*****************************************
+/* HEADER (shared across pages)
+/*****************************************/
+header {
+  background-color: var(--cream);
+  height: 150px;
+  width: 100%;
+  /* positioning (fixed) is already set inline in header.ejs */
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  float: left;
+  padding-left: 50px;
+}
+
+header ul {
+  list-style: none;
+  padding-top: 20px;
+  padding-left: 0;
+}
+
+header li,
+header select,
+.headerButtons {
+  display: inline;
+  font-family: "Inter", sans-serif;
+  font-size: 25px;
+}
+
+header li {
+  padding-left: 20px;
+}
+
+header a {
+  color: black;
+}
+
+.headerButtons {
+  float: right;
+  margin-left: 700px;
+}
+
+#login,
+#signup {
+  margin: 10px;
+  border-radius: 50px;
+  padding: 10px 15px;
+  box-shadow: 0 4px 6px rgb(215, 207, 195);
+  background-color: var(--cream);
+  border: none;
+  font-size: 20px;
+  height: 50px;
+  width: auto;
+  text-align: center;
+}
+
+#signup {
+  background-color: var(--purple);
+  box-shadow: 0 4px 6px var(--purple-dark);
+  color: white;
+}
+
+.signup {
+  color: white;
+}
+
+select {
+  border: none;
+  background-color: var(--cream);
+  width: 100px;
+}
+
+/* === HEADER LOGO FIX — controls size on all screens === */
+header .hero-logo {
+    width: 160px;        
+    height: auto;
+    margin-left: 20px;
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+  header .hero-logo {
+      width: 130px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  header .hero-logo {
+      width: 110px;
+  }
+}
+
+/* Small phones */
+@media (max-width: 420px) {
+  header .hero-logo {
+      width: 95px;
+  }
+}
+
+/*****************************************
+/* HOME PAGE: HERO MAIN SECTION
+/*****************************************/
 main {
+  padding-top: 150px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 2rem;
   margin: 100px;
-  font-family: 'Inter', sans-serif;
-  background: rgb(242, 242, 242) ;
+  font-family: "Inter", sans-serif;
+  background: var(--light-gray);
   border-radius: 12px;
 }
 
-h1{
-    font-family:'Figtree', 'Courier New', Courier, monospace;
-    font-weight: 400;
-    font-size: 70px;
-    margin-right: 80px;
-    margin-left: 20px;
+main h1 {
+  font-family: "Figtree", sans-serif;
+  font-weight: 400;
+  font-size: 70px;
+  margin-right: 80px;
+  margin-left: 20px;
 }
 
-main p{
-    font-size: 20px;
-    margin-right: 70px;
-    margin-left: 20px;
+main p {
+  font-size: 20px;
+  margin-right: 70px;
+  margin-left: 20px;
 }
 
 main img {
   width: 45%;
   max-width: 500px;
-  height: auto;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-#getStarted, #learnMore{
-    margin: 10px;
-    border-radius: 50px;
-    padding: 10px;
-    padding-left: 15px;
-    padding-right: 15px;
-    box-shadow: 0 4px 6px rgb(215, 207, 195);
-    background-color: rgb(253, 245, 232);
-    border: none;
-    font-size: 20px;
+/* Hero CTAs */
+#getStarted,
+#learnMore {
+  margin: 10px;
+  border-radius: 50px;
+  padding: 10px 15px;
+  box-shadow: 0 4px 6px rgb(215, 207, 195);
+  background-color: var(--cream);
+  border: none;
+  font-size: 20px;
 }
 
-#getStarted{
-    background-color: rgb(51, 50, 148);
-    box-shadow: 0 4px 6px rgb(23, 23, 67);
-    color: white;
+#getStarted {
+  background-color: var(--purple);
+  box-shadow: 0 4px 6px var(--purple-dark);
+  color: white;
 }
 
-
-
-
-/******************************************
-/* FEATURES SECTION STYLES
-/*******************************************/
-
-.features{
-    background: rgb(204, 183, 246);
-    height: 600px;
-}
-
-#features{
-    text-align: center;
-    margin: 0;
-}
-
-h4{
-    font-family:'Figtree', 'Courier New', Courier, monospace;
-    font-weight: 700;
-    font-size: 20px;
-    margin-bottom: 0;
-}
-h2{
-    font-family:'Figtree', 'Courier New', Courier, monospace;
-    font-weight: 300;
-    font-size: 70px;   
-    margin: 0px;
-    padding: 20px;
-}
-
-#features span{
-    font-family:'Figtree', 'Courier New', Courier, monospace;
-    font-weight: 300;
-    font-size: 20px;   
-}
-
+/*****************************************
+/* FEATURES SECTION
+/*****************************************/
 .features {
-  background: rgb(204, 183, 246);
+  background: var(--soft-purple);
   padding: 60px 40px;
   text-align: center;
 }
 
-/* Create a flex container only for the feature boxes */
+#features {
+  text-align: center;
+}
+
+#features span {
+  font-family: "Figtree", sans-serif;
+  font-weight: 300;
+  font-size: 20px;
+}
+
+/* Flex container for feature boxes */
 .features .features-container {
   display: flex;
   flex-direction: row;
@@ -194,7 +325,7 @@ h2{
   margin-top: 40px;
 }
 
-/* Individual feature boxes */
+/* Shared card styles for the two right boxes */
 .pomodoroMethod,
 .communicate {
   flex: 1;
@@ -205,115 +336,111 @@ h2{
   text-align: left;
 }
 
-/******************************************
-/* CONNECT SECTION STYLES
-/*******************************************/
-
-.connectSection{
-    background-image: url('https://images.pexels.com/photos/6925373/pexels-photo-6925373.jpeg?_gl=1*1es1jdo*_ga*MjEzNDkyNjk1NC4xNzYyNTkxMzE1*_ga_8JE65Q40S6*czE3NjI1OTEzMTQkbzEkZzAkdDE3NjI1OTEzMTQkajYwJGwwJGgw');
-    background-size: cover;
-    font-family:'Figtree', 'Courier New', Courier, monospace;
-    font-weight: 300;
-    font-size: 20px;  
-    color: white;
-    width: 700px;
-    height: 350px;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border: none;
-    text-align: left;
+/*****************************************
+/* CONNECT SECTION (big left card)
+/*****************************************/
+.connectSection {
+  background-image: url("https://images.pexels.com/photos/6925373/pexels-photo-6925373.jpeg?_gl=1*1es1jdo*_ga*MjEzNDkyNjk1NC4xNzYyNTkxMzE1*_ga_8JE65Q40S6*czE3NjI1OTEzMTQkbzEkZzAkdDE3NjI1OTEzMTQkajYwJGwwJGgw");
+  background-size: cover;
+  font-family: "Figtree", sans-serif;
+  font-weight: 300;
+  font-size: 20px;
+  color: white;
+  width: 700px;
+  height: 350px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: none;
+  text-align: left;
 }
 
-.connectSection span{
-    font-weight: 700;
-    padding: 50px;
-    position: relative;
-    top: 30px;
+.connectSection span {
+  font-weight: 700;
+  padding: 50px;
+  position: relative;
+  top: 30px;
 }
 
-.connectSection h3{
-    font-size: 50px;
-    padding-left: 50px;
-    margin-right: 100px;
-    margin-bottom: 20px;
+.connectSection h3 {
+  font-size: 50px;
+  padding-left: 50px;
+  margin-right: 100px;
+  margin-bottom: 20px;
+  margin-top: 40px;
 }
 
-.connectSection p{
-    font-size: 20px;
-    font-weight: 400;
-    padding-left: 50px;
-    margin: 0;
+.connectSection p {
+  font-size: 20px;
+  font-weight: 400;
+  padding-left: 50px;
+  margin: 0;
 }
 
-#explore, #learn{
-    background: transparent;
-    font-size: 20px;
-    border: none;
-    margin-top: 20px;
-    color: white;
+#explore,
+#learn {
+  background: transparent;
+  font-size: 20px;
+  border: none;
+  margin-top: 20px;
+  color: white;
 }
 
-#learn a{
-    color: white;
+#learn a {
+  color: white;
 }
 
-#explore{
-    margin-left: 50%;
-    border-radius: 50px;
-    padding: 10px;
-    padding-left: 15px;
-    padding-right: 15px;
-    box-shadow: 0 4px 6px rgb(215, 207, 195);
-    border: solid 1px rgb(215, 207, 195);
-    font-size: 20px;
+#explore {
+  margin-left: 50%;
+  border-radius: 50px;
+  padding: 10px 15px;
+  box-shadow: 0 4px 6px rgb(215, 207, 195);
+  border: solid 1px rgb(215, 207, 195);
 }
-
 
 .connectSection button {
-  background-color: rgb(51, 50, 148);
+  background-color: var(--purple);
   color: white;
   border: none;
   border-radius: 50px;
   padding: 10px 25px;
   font-size: 16px;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-
-/******************************************
-/* POMODORO SECTION STYLES && COMMUNICATE SECTION STYLES
-/*******************************************/
-
-.pomodoroMethod, .communicate{
-    background-image: url('https://t3.ftcdn.net/jpg/15/55/23/00/240_F_1555230053_pWwHVOWApyrTLgutdLt3YWNynhnFDekX.jpg');
-    background-size: cover;
-    font-family:'Figtree', 'Courier New', Courier, monospace;
-    font-weight: 300;
-    font-size: 20px;  
-    color: white;
+/*****************************************
+/* POMODORO & COMMUNICATE CARDS
+/*****************************************/
+.pomodoroMethod,
+.communicate {
+  background-size: cover;
+  font-family: "Figtree", sans-serif;
+  font-weight: 300;
+  font-size: 20px;
+  color: white;
+  background-image: url("https://t3.ftcdn.net/jpg/15/55/23/00/240_F_1555230053_pWwHVOWApyrTLgutdLt3YWNynhnFDekX.jpg");
 }
 
-.pomodoroMethod h3, .communicate h3{
-    margin: 0px;
-    font-size: 30px;
+.communicate {
+  background-image: url("https://t4.ftcdn.net/jpg/16/35/78/65/240_F_1635786529_LXB7lDGntvaukXAW2156CzqSAGpJQOkc.jpg");
 }
 
-.pomodoroMethod a, .communicate a{
-    font-weight: 700;
-    color: white;
+.pomodoroMethod h3,
+.communicate h3 {
+  margin: 0;
+  font-size: 30px;
 }
 
-.communicate{
-    background-image: url('https://t4.ftcdn.net/jpg/16/35/78/65/240_F_1635786529_LXB7lDGntvaukXAW2156CzqSAGpJQOkc.jpg');
+.pomodoroMethod a,
+.communicate a {
+  font-weight: 700;
+  color: white;
 }
 
-/******************************************
-/* HOW TO SECTION STYLES
-/*******************************************/
-
-/* HOW TO SECTION */
+/*****************************************
+/* HOW IT WORKS SECTION
+/*****************************************/
 .howTo {
   display: flex;
   align-items: flex-start;
@@ -323,7 +450,6 @@ h2{
   flex-wrap: wrap;
 }
 
-/* Left side: all the text content */
 .howContent {
   padding-top: 50px;
   flex: 1;
@@ -334,12 +460,12 @@ h2{
   gap: 50px;
 }
 
-.howContent h4{
-    font-size: 30px;
-    padding-bottom: 10px;
+.howContent h4 {
+  font-size: 30px;
+  padding-bottom: 10px;
 }
 
-/* Each step row */
+/* each row */
 .howContent > div {
   display: flex;
   align-items: center;
@@ -350,29 +476,27 @@ h2{
   flex-shrink: 0;
   width: 50px;
   height: 50px;
-  fill: rgb(51, 50, 148);
+  fill: var(--purple);
 }
 
-/* Stack h4 and span vertically inside each card */
 .howContent .text {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 20px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
 
-/* Right side image */
+/* right image */
 .howTo img {
   flex: 1;
   max-width: 500px;
-  width: 100%;
-  height: auto;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   margin-top: 30px;
 }
-/* CTA row (Join Now + Learn More) */
+
+/* CTA row */
 .cta-row {
   display: flex;
   align-items: center;
@@ -380,15 +504,14 @@ h2{
   margin-top: 30px;
 }
 
-/* Join Now button */
 .cta-row button {
-  background-color: rgb(51, 50, 148);
+  background-color: var(--purple);
   color: white;
   border: none;
   border-radius: 50px;
   padding: 10px 25px;
   font-size: 16px;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
@@ -397,602 +520,795 @@ h2{
   background-color: rgb(35, 35, 110);
 }
 
-/* Learn More link */
 .cta-row a {
   display: inline-flex;
   align-items: center;
-  color: rgb(51, 50, 148);
+  color: var(--purple);
   font-weight: 600;
   text-decoration: none;
   font-size: 16px;
-  font-family: 'Inter', sans-serif;
-  gap: 6px; /* spacing between text and arrow */
+  font-family: "Inter", sans-serif;
+  gap: 6px;
 }
 
 .cta-row a svg {
-  width: 1em;  /* matches text size */
+  width: 1em;
   height: 1em;
   vertical-align: middle;
 }
 
-
-/******************************************
-/* FOOTER STYLES
-/*******************************************/
-
-footer{
+/*****************************************
+/* FOOTER (desktop base)
+/*****************************************/
+/* === CLEAN FOOTER TEXT LAYOUT === */
+footer {
     background-color: rgb(253, 245, 232);
+    padding: 50px 40px;
 }
 
-/* Create a flex container only for the feature boxes */
 .footer-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: stretch;
-  gap: 50px;
-  margin-top: 40px;
-  padding-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 40px;
 }
 
-footer li{
+/* Column titles */
+.footer-title {
+    font-weight: 700;
+    padding-bottom: 6px;
+}
+
+/* All links inside footer lists */
+.footer-container ul li a {
+    color: black;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.footer-container ul li {
     list-style: none;
+    padding: 6px 0;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Subscription block */
+.subscription {
+    width: 280px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.subscription input {
+    width: 100%;
     padding: 10px;
-    font-family: 'Inter', sans-serif; 
-    margin-left: 50px;  
-}
-
-.subscription{
-  margin-top: 50px;
-  margin-left: 20%;
-  font-family: 'Inter', sans-serif;
-  font-size: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.subscribe{
-    font-weight: 600;
-}
-
-footer .text{
-    padding-top: 20px;
-}
-
-footer input{
-    margin-top: 20px;
-    background-color: aliceblue;
-    padding: 10px;
-    border: none;
     border-radius: 12px;
-    font-family: 'Inter', sans-serif;
-}
-
-#submit{
-    margin: 10px;
-    border-radius: 50px;
-    padding: 5px;
-    padding-left: 15px;
-    padding-right: 15px;
-    box-shadow: 0 4px 6px rgb(215, 207, 195);
-    background-color: aliceblue;
     border: none;
-    font-size: 20px;
+    background-color: white;
 }
 
-.bottomFooter{
-    border-top: solid lightgrey 2px;
-    margin-left: 30px;
-    margin-right: 30px;
-    padding-top: 30px;
-    padding-bottom: 30px;
+#submit {
+    width: 100%;
+    padding: 10px;
+}
+
+/* Bottom footer text */
+.bottomFooter {
+    margin-top: 40px;
+    border-top: 1px solid lightgray;
+    padding-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
     font-family: 'Inter', sans-serif;
 }
 
-.bottomFooter span{
-    padding-left: 20px;
+.bottomFooter span {
     padding-right: 20px;
 }
 
-.icons{
-    display: inline;
-    margin-left: 40%;
+/* Icons centered under bottom links */
+.icons {
+    display: flex;
+    gap: 20px;
+    margin-top: 10px;
+}
+
+
+/*****************************************
+/* ABOUT / POMODORO PAGES (.bd-page)
+/*****************************************/
+.bd-page {
+  background-color: var(--cream) !important;
+  padding: 40px 0 !important;
+}
+
+.bd-inner {
+  width: 90%;
+  max-width: 1100px;
+  margin: auto;
+}
+
+.bd-hero {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.bd-card {
+  background: white;
+  border-radius: 20px;
+  padding: 40px;
+  margin-bottom: 40px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+}
+
+.bd-card img {
+  float: left;
+  width: 250px;
+  max-width: 40%;
+  margin-right: 30px;
+  border-radius: 16px;
+}
+
+.bd-card p {
+  font-size: 20px;
+  line-height: 1.5;
+}
+
+/*****************************************
+/* MATCH PAGE / SIMPLE CENTER CARDS
+/*****************************************/
+.match-page .card {
+  text-align: center;
+}
+
+/*****************************************
+/* LOGIN / SIGNUP PAGES (Bootstrap layout)
+/*****************************************/
+.container h1 {
+  float: none;
+  text-align: center;
+}
+/* ===========================================
+   PERFECT 4-COLUMN FOOTER (DESKTOP)
+   =========================================== */
+footer {
+    background: #fdf2e9;
+    padding: 60px 40px;
+    font-family: 'Inter', sans-serif;
+}
+
+.footer-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1.2fr;
+    gap: 60px;
+    align-items: start;
+    margin-bottom: 40px;
+}
+
+/* footer column headings */
+.footer-col h4 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+/* footer lists */
+.footer-col ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-col ul li {
+    margin-bottom: 8px;
+}
+
+.footer-col ul li a {
+    color: black;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+/* subscribe box */
+.subscribe-col p {
+    font-size: 15px;
+    line-height: 1.4;
+    margin-bottom: 12px;
+}
+
+.subscribe-row {
+    display: flex;
+    gap: 10px;
+}
+
+.subscribe-row input {
+    flex: 1;
+    padding: 10px 14px;
+    background: #eef6ff;
+    border-radius: 12px;
+    border: none;
+    font-size: 15px;
+}
+
+#submit {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 8px 18px;
+    border: none;
+    font-size: 15px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+/* bottom bar */
+.bottomFooter {
+    border-top: 1px solid #dcdcdc;
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.bottom-left span {
+    margin-right: 20px;
+    font-size: 15px;
+}
+
+.icons {
+    display: flex;
+    gap: 20px;
     font-size: 20px;
 }
-.icons a{
-    padding-left: 20px;
+
+.icons a {
+    color: black;
 }
 
+/*****************************************
+/* RESPONSIVE BREAKPOINTS
+/*****************************************/
 
-/******************************************
-/* MEDIA QUERIES
-/*******************************************/
-
-
-@media screen and (max-width: 1280px) {
-
-/******************************************
-/* HEADER STYLES
-/*******************************************/
-.headerButtons{
-margin-left: 30%;
-}
-  
-/******************************************
-/* MAIN STYLES
-/*******************************************/
-
-h1{
-    font-size: 60px;
-    margin-top: -20px;
-
+/* Slight typography tweak for medium screens on bd pages */
+@media (max-width: 768px) {
+  .bd-hero h1 {
+    font-size: 34px;
+  }
+  .bd-card {
+    padding: 25px;
+  }
 }
 
-main img {
-  height: 670px;
-  width: 600px;
-}
-
-#getStarted, #learnMore{
-  margin-left: 60px;
-}
-
-
-/******************************************
-/* FEATURES SECTION STYLES
-/*******************************************/
-
-/******************************************
-/* CONNECT SECTION STYLES
-/*******************************************/
-
-
-.connectSection h3{
-    font-size: 40px;
-    padding-left: 50px;
-    margin-right: 100px;
-    margin-bottom: 20px;
-}
-
-/******************************************
-/* FOOTER STYLES
-/*******************************************/
-
-
-.subscription{
-  margin-left: 5%;
-}
-.icons{
-  float: right;
-}
-
-}
-
-
-@media screen and (max-width: 1100px) {
-
-/******************************************
-/* HEADER STYLES
-/*******************************************/
-.headerButtons{
-margin-left: 20%;
-}
-  
-/******************************************
-/* MAIN STYLES
-/*******************************************/
-
-h1{
-    font-size: 50px;
-    margin-right: -20px;
-
-}
-
-main img{
-  height: 400px;
-}
-
-main p{
-  margin-right: -10px;
-}
-
-#getStarted, #learnMore{
-  margin-left: 20px;
-}
-
-
-/******************************************
-/* FEATURES SECTION STYLES
-/*******************************************/
-
-/******************************************
-/* CONNECT SECTION STYLES
-/*******************************************/
-
-
-.connectSection h3{
-    font-size: 30px;
-    margin-top: 50px;
-}
-
-.connectSection p{
-  margin-right: 20px;
-}
-
-#explore{
-  margin-left: 150px;
-  margin-top: 60px;
-}
-
-/******************************************
-/* FOOTER STYLES
-/*******************************************/
-
-.footer-container{
-  position: relative;
-  right: 50px;
-}
-
-.subscription{
-  margin-left: 25px;
-}
-
-#submit{
-  margin: 0px;
-}
-
-.company, .resources, .legal{
-  width: 150px;
-}
-
-}
-
-@media screen and (max-width: 1050px) {
-
-/******************************************
-/* MAIN STYLES
-/*******************************************/
-
-h1{
-    font-size: 40px;
-    margin-right: -20px;
-
-}
-
-/******************************************
-/* FEATURES SECTION STYLES
-/*******************************************/
-
-/******************************************
-/* CONNECT SECTION STYLES
-/*******************************************/
-
-.connectSection h3{
-    font-size: 30px;
-    margin-right: 10px;
-}
-
-.connectSection p{
-  margin-right: 10px;
-}
-
-#explore{
-  margin-left: 50px;
-  margin-top: 60px;
-}
-
-/******************************************
-/* FOOTER STYLES
-/*******************************************/
-
-.footer-container{
-  position: relative;
-  right: 60px;
-  gap: 30px;
-}
-
-.footer-container ul{
-  padding: 0px;
-}
-
-.subscription{
-  margin-left: 25px;
-}
-
-#submit{
-  margin: 0px;
-}
-
-.company, .resources, .legal{
-  width: 150px;
-}
-
-}
-
+/* Main layout and header for tablets & small laptops */
 @media screen and (max-width: 800px) {
-
-/******************************************
-/* HEADER STYLES
-/*******************************************/
-
-header select{
-  display: none;
-}
-
-#login{
-  margin-left: -60px;
-}
-  
-/******************************************
-/* MAIN STYLES
-/*******************************************/
-
- /* H1 full width at top */
-main h1 {
-  text-align: center;
-    width: 700px;
-    font-size: 40px;
-    margin: 0 0 20px 0; 
-}
-
-
-  /* Stack the whole main vertically (h1 first) */
-  main {
-    flex-direction: column;
-    gap: 20px;
-    margin: 40px 20px;
-  }
-
-  /* Second row: LEFT textColumn | RIGHT image */
-  .main {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    width: 100%;
-    align-items: start;
-    gap: 20px;
-  }
-
-  /* LEFT COLUMN — p + buttons together */
-  .textColumn {
-    grid-column: 1 / 2;
-  }
-
-  .textColumn p {
-    margin-right: 400px;
-  }
-
-  .textColumn button {
-    width: fit-content;
-    display: block;
-    margin: 10px 0;
-  }
-
-  /* RIGHT COLUMN — image */
-  main img {
-    grid-column: 2 / 3;
-    justify-self: center;
-    width: auto;
-    position: relative;
-    right: 350px;
-  }
-/******************************************
-/* FEATURES SECTION STYLES
-/*******************************************/
-
-.features{
-  height: 700px;
-}
-
-/******************************************
-/* CONNECT SECTION STYLES
-/*******************************************/
-
-.communicate{
-  display: none;
-}
-
-.howTo img{
-  display: none;
-}
-/******************************************
-/* FOOTER STYLES
-/*******************************************/
-
-.subscription{
-  display: none;
-}
-
-}
-
-/******************************************
-/* CLEAN MOBILE FIX — 500px AND BELOW
-*******************************************/
-@media screen and (max-width: 500px) {
-
-  /******** HEADER ********/
-
-  /* Hide nav menu items */
-  header ul li:nth-child(1),
-  header ul li:nth-child(2),
-  header ul li:nth-child(3) {
-    display: none !important;
-  }
-
-  /* Header layout simplified */
+  /* HEADER: keep bar but reduce spacing */
   header {
-    height: 100px;
-    padding: 10px 0;
+    height: auto;
+    padding: 12px 16px;
     display: flex;
-    flex-direction: column;
     align-items: center;
+    justify-content: space-between;
   }
 
   .logo {
-    position: relative;
-    right: 150px;
+    float: none;
+    padding-left: 0;
   }
 
-  /* Login + Signup inline, centered */
+  header ul {
+    padding-top: 0;
+  }
+
   .headerButtons {
-    height: 60px;
-    display: flex !important;
-    flex-direction: row !important;
-    gap: 12px;
-    margin-left: 0 !important;
-    position: relative;
-    top: -100px;
-    left: 60px;
+    float: none;
+    margin-left: 0;
   }
 
-  #login,
-  #signup {
-    font-size: 15px !important;
-    padding: 6px 14px !important;
-  }
-
-
-
-  /******** HERO IMAGES + CONTENT ********/
-
-  /* Prevent side overflow from 800px rules */
-  .main {
-    flex-direction: column !important;
-    width: 100% !important;
-    gap: 15px !important;
+  /* HERO (home) */
+  main {
+    padding-top: 120px;
+    margin: 24px 16px;
+    border-radius: 12px;
+    flex-direction: column-reverse; /* text first, image below */
+    gap: 24px;
   }
 
   main img {
-    display: none;
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    margin: 0 auto;
+    position: static;
   }
 
-  /* Text centered */
+  section.main {
+    width: 100%;
+  }
+
   main h1 {
+    font-size: 32px;
+    margin: 0 0 12px 0;
     text-align: center;
-    font-size: 20px;
-    width: 350px;
+  }
+
+  .textColumn {
+    width: 100% !important;
+    text-align: center;
   }
 
   .textColumn p {
-    text-align: center;
-    margin: 0 auto !important;
-    font-size: 16px !important;
-    max-width: 320px;
+    margin: 0 auto 16px auto !important;
+    max-width: 500px;
+    font-size: 18px;
   }
 
-  #getStarted{
-    position: relative;
-    top: 5px;
-    left: 20px;
+  #getStarted,
+  #learnMore {
+    display: inline-block;
+    margin: 8px 8px 0 8px;
   }
 
-  #learnMore{
-  position: relative;
-  left: 170px;
-  top: -47px;
-  }
-
-
-
-  /******** FEATURES IMAGES ********/
-
-  h2{
-    text-align: center;
-    font-size: 50px;
-  }
-
-  .features{
-    height: 1050px;
+  /* FEATURES */
+  .features {
+    padding: 40px 16px;
+    height: auto;
   }
 
   .features .features-container {
-    flex-direction: column !important;
-    gap: 20px !important;
+    flex-direction: column;
+    gap: 24px;
   }
 
   .connectSection,
   .pomodoroMethod,
   .communicate {
-    width: 100% !important;
-    max-width: 100% !important;
-    padding: 20px !important;
-    height: auto !important;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
   }
 
-  .connectSection img,
-  .pomodoroMethod img,
-  .communicate img {
-    width: 100% !important;
-    height: auto !important;
-    object-fit: cover;
-  }
-
-  .connectSection, .pomodoroMethod{
-    margin-left: -20px;
-  }
-
-  /******** HOW-TO ********/
-
+  /* HOW-TO */
   .howTo {
-    padding: 20px 10px !important;
-    text-align: center !important;
-    flex-direction: column !important;
-    gap: 25px;
+    padding: 40px 16px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 32px;
+  }
+
+  .howContent {
+    padding-top: 0;
+  }
+
+  .howTo img {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  /* FOOTER */
+  .footer-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+    padding: 24px 16px 32px;
+  }
+
+  .subscription {
+    margin-left: 0;
+    margin-top: 0;
+  }
+
+  .icons {
+    margin-left: 0;
+  }
+}
+
+/* ABOUT / POMODORO mobile layout */
+@media screen and (max-width: 700px) {
+  .bd-card {
+    padding: 24px;
+    text-align: left;
+  }
+
+  .bd-card img {
+    float: none !important;
+    width: 100% !important;
+    max-width: 350px;
+    margin: 0 auto 20px auto !important;
+  }
+
+  .bd-card p {
+    font-size: 18px;
+    margin-top: 10px;
+  }
+
+  .bd-hero h1 {
+    font-size: 32px !important;
+  }
+
+  .footer-container {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .company, .resources, .legal {
+        width: 100%;
+    }
+
+    .subscription {
+        width: 100%;
+    }
+
+    .bottomFooter {
+        text-align: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .icons {
+        justify-content: center;
+    }
+
+}
+/* MOBILE: phones */
+@media screen and (max-width: 500px) {
+  /* HEADER: hide nav links, keep logo + buttons */
+  header ul li:nth-child(1),
+  header ul li:nth-child(2),
+  header ul li:nth-child(3) {
+    display: none;
+  }
+
+  header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+  }
+
+  .logo {
+    margin: 0;
+  }
+
+  .headerButtons {
+    display: flex;
+    gap: 8px;
+    margin-left: 0;
+    height: auto;
+  }
+
+  #login,
+  #signup {
+    font-size: 14px;
+    padding: 6px 12px;
+  }
+
+  /* HERO */
+  main {
+    padding-top: 110px;
+    margin: 16px;
+    gap: 16px;
+  }
+
+  main h1 {
+    font-size: 24px;
+    text-align: center;
+    margin: 0 0 8px;
+  }
+
+  .textColumn p {
+    text-align: center;
+    margin: 0 auto 16px;
+    font-size: 16px;
+    max-width: 320px;
+  }
+
+  #getStarted,
+  #learnMore {
+    display: block;
+    width: 100%;
+    max-width: 260px;
+    margin: 8px auto;
+    text-align: center;
+  }
+
+  main img {
+    max-width: 320px;
+  }
+
+  /* FEATURES */
+  h2 {
+    font-size: 36px;
+  }
+
+  .features {
+    padding: 32px 16px;
+  }
+
+  .features .features-container {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .connectSection,
+  .pomodoroMethod,
+  .communicate {
+    margin: 0;
+    width: 100%;
+    padding: 20px;
+  }
+
+  /* HOW-TO */
+  .howTo {
+    padding: 24px 12px;
   }
 
   .howContent > div {
-    flex-direction: column !important;
-    align-items: center !important;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
   }
 
-  .cta-row button{
-    margin-left: 80px;
+  .cta-row {
+    flex-direction: column;
+    align-items: center;
   }
 
-  .learn{
-    position: relative;
-    left: 160px;
-    top: -50px;
+  .cta-row button {
+    margin: 0;
   }
 
-  /******** FOOTER ********/
+  .learn {
+    margin-top: 4px;
+  }
 
+  /* FOOTER: stacked layout */
   footer {
     text-align: center;
-    padding: 25px 0 !important;
+    padding: 24px 0;
   }
 
-  /* Turn footer into 2 columns (instead of long list) */
   .footer-container {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr !important;
-    gap: 20px;
-    justify-items: center;
-    padding: 0 20px !important;
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+    padding: 0 16px 24px;
   }
 
   .footer-container ul {
-    padding: 0 !important;
+    padding: 0;
     margin: 0;
   }
 
   .footer-container li {
-    margin-left: 0 !important;
+    margin-left: 0;
     padding: 6px 0;
-    font-size: 15px !important;
+    font-size: 15px;
   }
 
-  /* Bottom area */
+  .subscription {
+    display: block;
+    text-align: left;
+    width: 100%;
+    padding: 0 0;
+    margin: 0;
+  }
+
   .bottomFooter {
-    flex-direction: column !important;
-    gap: 8px;
+    margin: 16px;
     text-align: center;
-    margin-top: 20px;
   }
 
   .icons {
-    justify-content: center !important;
-    margin-left: 0 !important;
+    margin-left: 0;
+    display: flex;
+    justify-content: center;
   }
+}
 
+/* ===========================================
+   FINAL MOBILE FOOTER PATCH (<= 700px)
+   =========================================== */
+@media (max-width: 700px) {
+
+    footer {
+        padding: 40px 20px !important;
+    }
+
+    /* stack all footer columns vertically */
+    .footer-container {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start;
+        gap: 30px !important;
+        width: 100%;
+    }
+
+    .footer-col {
+        width: 100% !important;
+    }
+
+    .footer-col h4 {
+        margin-bottom: 8px;
+    }
+
+    .footer-col ul li {
+        padding: 4px 0;
+        font-size: 16px;
+    }
+
+    /* Subscription column */
+    .subscribe-col {
+        width: 100% !important;
+    }
+
+    .subscribe-col p {
+        margin: 0 0 12px 0;
+        font-size: 15px;
+        line-height: 1.4;
+        max-width: 90%;
+    }
+
+    .subscribe-row {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .subscribe-row input {
+        width: 100% !important;
+        padding: 12px !important;
+        font-size: 16px;
+    }
+
+    #submit {
+        width: 100% !important;
+        padding: 12px 0;
+        text-align: center;
+    }
+
+    /* bottom footer */
+    .bottomFooter {
+        flex-direction: column !important;
+        text-align: center !important;
+        gap: 10px !important;
+        padding-top: 20px;
+    }
+
+    .bottom-left span {
+        display: block;
+        padding: 3px 0;
+        margin: 0 !important;
+    }
+
+    /* social icons centered */
+    .icons {
+        display: flex !important;
+        justify-content: center !important;
+        gap: 20px !important;
+        margin-top: 10px;
+    }
+}
+/* ==========================================================
+   ABOUT PAGE MOBILE FIX (<= 700px)
+   ========================================================== */
+@media (max-width: 700px) {
+
+    /* the full page */
+    .bd-page {
+        padding: 20px 0 !important;
+    }
+
+    .bd-inner {
+        width: 92% !important;
+        margin: auto !important;
+    }
+
+    /* hero title */
+    .bd-hero h1 {
+        font-size: 28px !important;
+        line-height: 1.2 !important;
+    }
+
+    /* cards */
+    .bd-card {
+        padding: 22px !important;
+        border-radius: 14px;
+        margin-bottom: 24px !important;
+        text-align: left !important;
+    }
+
+    /* image inside card */
+    .bd-card img {
+        width: 100% !important;
+        max-width: 350px !important;
+        height: auto !important;
+        float: none !important;
+        display: block !important;
+        margin: 0 auto 16px auto !important;
+    }
+
+    /* paragraph text */
+    .bd-card p {
+        font-size: 17px !important;
+        line-height: 1.45 !important;
+        margin-top: 10px !important;
+        padding-left: 0 !important;
+    }
+}
+/* REMOVE WHITE BACKGROUND FROM ABOUT THE CREATOR BLOCK ONLY */
+.creator-card {
+    background-color: none ;   /* remove white box */
+    box-shadow: none !important;          /* remove drop shadow */
+    border: none !important;              /* remove border if any */
+}
+
+/* keep the card spacing */
+.creator-card {
+    padding: 25px 20px !important;
+}
+
+/* text formatting stays clean on mobile */
+@media (max-width: 700px) {
+    .creator-card {
+        padding: 20px !important;
+        border-radius: 0 !important;
+    }
+
+    .creator-card p {
+        font-size: 17px !important;
+        line-height: 1.45 !important;
+    }
+}
+/* Remove white background and shadow */
+.creator-section {
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+}
+
+/* Main layout for the creator block */
+.creator-card {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+    padding: 20px 10px;
+}
+
+/* Image */
+.creator-img {
+    width: 280px;
+    border-radius: 16px;
+    box-shadow: none;
+}
+
+/* Text column */
+.creator-text {
+    flex: 1;
+    font-size: 20px;
+    line-height: 1.5;
+}
+
+/*********** MOBILE FIX ***********/
+@media (max-width: 700px) {
+    .creator-card {
+        flex-direction: column;
+        align-items: center;
+        text-align: left;
+        padding: 10px;
+    }
+
+    .creator-img {
+        width: 90%;
+        max-width: 320px;
+        margin-bottom: 20px;
+    }
+
+    .creator-text p {
+        font-size: 17px;
+        width: 100%;
+        padding: 0 !important;
+    }
 }

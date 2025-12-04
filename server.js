@@ -94,7 +94,7 @@ const socketToRoom = {};
 // roomState[roomId] = { choices: {}, sockets: [] }
 const roomState = {};
 
-// 🔥 GLOBAL — Tracks intentional navigation to break
+// tracks intentional navigation to break
 const goingOnBreak = {};
 
 io.on("connection", (socket) => {
@@ -183,9 +183,29 @@ io.on("connection", (socket) => {
 
       let action = (c1 === "stay" && c2 === "stay") ? "stay" : "new";
 
+      const s1 = io.sockets.sockets.get(u1);
+      const s2 = io.sockets.sockets.get(u2);
+
+      if (s1) s1.leave(roomId);
+      if (s2) s2.leave(roomId);
+
       // Send result directly to each user
+      io.to([u1, u2]).emit("prepareForReconnect");
+
+      if (action === "stay") {
+    
+      const caller = u1;
+      const callee = u2;
+
+      io.to(caller).emit("breakResult", { action, isCaller: true });
+      io.to(callee).emit("breakResult", { action, isCaller: false });
+
+  } else {
+    
       io.to(u1).emit("breakResult", { action });
       io.to(u2).emit("breakResult", { action });
+  }
+
 
       delete roomState[roomId];
     }
@@ -217,6 +237,20 @@ io.on("connection", (socket) => {
   socket.on("chatMessage", ({ roomId, message, senderName }) => {
     io.to(roomId).emit("chatMessage", { message, senderName });
   });
+
+  // user clicked 'find new double' (not a break)
+socket.on("leavingSession", ({ roomId }) => {
+  console.log("leavingSession:", socket.id, "room:", roomId);
+
+  // notify the partner that this user left intentionally
+  if (roomId) {
+    socket.to(roomId).emit("partnerDisconnected");
+  }
+
+  // clean their room tracking
+  socket.leave(roomId);
+  delete socketToRoom[socket.id];
+});
 
   // =============================
   //        DISCONNECT

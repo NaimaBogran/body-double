@@ -17,10 +17,6 @@
     href="/css/style.css"
     />
     <link 
-    rel="stylesheet" 
-    href="/css/global.css"
-    />
-    <link 
     rel="preconnect" 
     href="https://fonts.googleapis.com"
     />
@@ -39,16 +35,24 @@
     <title>BODY/DOUBLE</title>
    </head>
    <body>
-    <header>
-       <a href="/"> <img src="/img/bodyDouble_logo.png" class="logo" height="100px"> </a>
+    <header style="
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    backdrop-filter: blur(8px);">
+       <a href="/"> <img src="/img/bodyDouble_logo.png" class="hero-logo"> </a>
         <ul>
             <li><a href="/signup">connect</a></li>
             <li><a href="/pomodoroPage">works</a></li>
             <li><a href="/about">about</a></li>
          
-            <section class="headerButtons">
-            <p>User Name: <%= user.userName %></p>
-            <a href="/logout" id="signup">logout</a>
+            <section style="float: right;" class="headerButtons">
+            <p style="display: inline;">username: <%= user.userName %></p>
+            <a style="display: inline; margin-right: 50px; color: white;" href="/logout" id="signup">logout</a>
         </section>
         </ul>
    </header>

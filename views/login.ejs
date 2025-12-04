@@ -1,7 +1,11 @@
 <%- include('partials/header') -%>
 
 <main class="container">
-  <div class="row justify-content-center">
+   <h1 style="float: none; text-align: center;">welcome back to <span style="color: #333294; font-weight: bold;">BODY</span><span style=" font-weight: bold; ">/</span><span style="color: #bfa1ff; font-weight: bold;">DOUBLE</span></h1>
+  <div style="font-family:'Figtree', 'Courier New', Courier, monospace;display: flex; /* Enables Flexbox layout */
+  justify-content: center; /* Centers content horizontally */
+  align-items: center; /* Centers content vertically */
+  width: 100vw; " class="row justify-content-center">
     <section class="col-6 mt-5">
       <% if (locals.messages.errors) { %> <% messages.errors.forEach( el => { %>
       <div class="alert alert-danger"><%= el.msg %></div>
@@ -9,10 +13,10 @@
       messages.info.forEach( el => { %>
       <div class="alert alert-info"><%= el.msg %></div>
       <% }) %> <% } %>
-      <form action="/login" method="POST">
+      <form action="/login" method="POST" style="font-family:'Inter', 'Courier New', Courier, monospace;">
         <div class="mb-3">
-          <label for="exampleInputEmail1" class="form-label"
-            >Email address</label
+          <label for="exampleInputEmail1" class="form-label" style="font-size: 20px;""
+            > email address</label
           >
           <input
             type="email"
@@ -20,10 +24,11 @@
             id="exampleInputEmail1"
             aria-describedby="emailHelp"
             name="email"
+            style="margin-bottom: 10px;"
           />
         </div>
         <div class="mb-3">
-          <label for="exampleInputPassword1" class="form-label">Password</label>
+          <label for="exampleInputPassword1" class="form-label" style="font-size: 20px;">password</label>
           <input
             type="password"
             class="form-control"
@@ -31,7 +36,7 @@
             name="password"
           />
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">submit</button>
       </form>
     </section>
   </div>

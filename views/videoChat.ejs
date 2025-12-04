@@ -60,7 +60,7 @@
 }
 
 /* ===============================
-            CHAT (MATCH VIDEO STYLE)
+            CHAT 
 ================================ */
 #chat-section {
     width: 100%;
@@ -126,7 +126,7 @@
 </style>
 </head>
 
-<body>
+<body style="margin-top: 200px;">
 
 <h1 style="text-align:center; margin-top: 20px;">
     focus session with <%= partnerName %>
@@ -168,71 +168,135 @@
         <input id="chat-input" placeholder="type a message..." />
         <button id="sendBtn" type="submit">send</button>
     </form>
-
-    <button id="findNewBtn" class="btn btn-primary" onclick="window.location.href='/match'">
+<div style="display: flex; align-items: center; justify-content: center;">
+    <button id="findNewBtn" class="btn btn-primary" >
         find new double
     </button>
+</div>
 </section>
 
 
 <%- include("partials/footer") %>
-
+<script src="/socket.io/socket.io.js"></script>
 <script>
-/* ======================================
-        SOCKET + GLOBAL VARS
-====================================== */
-const socket = io();
+const socket       = io();
 
-const roomId = "<%= roomId %>";
-const myName = "<%= user.userName %>";
-const partnerName = "<%= partnerName %>";
-const isCaller = "<%= isCaller %>" === "true";
+const roomId       = "<%= roomId %>";
+const myName       = "<%= user.userName %>";
+const partnerName  = "<%= partnerName %>";
+const isCaller     = "<%= isCaller %>" === "true";
+const isFresh      = new URLSearchParams(window.location.search).get("fresh");
 
-socket.emit("joinRoom", { roomId });
-socket.emit("readyToCall", { roomId });
+console.log("videoChat → roomId:", roomId, "isCaller:", isCaller, "isFresh:", isFresh);
 
-/* ======================================
-        CHAT 
-====================================== */
-const form = document.getElementById("chat-form");
-const input = document.getElementById("chat-input");
-const messages = document.getElementById("messages");
+const localVideoEl  = document.getElementById("localVideo");
+const remoteVideoEl = document.getElementById("remoteVideo");
+const form          = document.getElementById("chat-form");
+const input         = document.getElementById("chat-input");
+const messages      = document.getElementById("messages");
+const timerEl       = document.getElementById("timer");
 
-form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const message = input.value.trim();
-    if (!message) return;
+let localStream        = null;
+let peerConnection     = null;
 
-    socket.emit("chatMessage", {
-        roomId,
-        message,
-        senderName: myName
-    });
+// hard reset
+function fullDisconnect() {
+    try {
+        if (peerConnection) {
+            peerConnection.ontrack = null;
+            peerConnection.onicecandidate = null;
+            peerConnection.close();
+        }
+    } catch (e) {
+        console.error("peerConnection cleanup error:", e);
+    }
+    peerConnection = null;
 
-    input.value = "";
+    if (localStream) {
+        localStream.getTracks().forEach(track => track.stop());
+    }
+
+    localStream = null;
+
+     if (localVideoEl) {
+        localVideoEl.srcObject = null;
+        localVideoEl.removeAttribute("srcObject");
+        localVideoEl.load();   // forces video element reset on mobile
+    }
+
+    if (remoteVideoEl) {
+        remoteVideoEl.srcObject = null;
+        remoteVideoEl.removeAttribute("srcObject");
+        remoteVideoEl.load();
+    }
+}
+
+// handle "find new double" button (leave current partner, look for a new one)
+document.getElementById("findNewBtn").addEventListener("click", () => {
+    // clean up WebRTC locally
+    fullDisconnect();
+
+    // tell server we are intentionally leaving this session
+    socket.emit("leavingSession", { roomId });
+
+    // go back to the match page to find someone new
+    window.location.href = "/match";
 });
 
-socket.on("chatMessage", (data) => {
+if (isFresh) {
+    fullDisconnect();
+}
+
+// join room
+socket.emit("joinRoom", { roomId });
+
+// server may ask us to reset before reconnect
+socket.on("prepareForReconnect", () => {
+    console.log("prepareForReconnect from server");
+    fullDisconnect();
+});
+
+/* =============================
+         CHAT
+============================= */
+if (form) {
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const message = input.value.trim();
+        if (!message) return;
+
+        socket.emit("chatMessage", {
+            roomId,
+            message,
+            senderName: myName
+        });
+
+        input.value = "";
+    });
+}
+
+socket.on("chatMessage", ({ message, senderName }) => {
+    if (!messages) return;
     const p = document.createElement("p");
-    p.textContent = `${data.senderName}: ${data.message}`;
+    p.textContent = `${senderName}: ${message}`;
     messages.appendChild(p);
     messages.scrollTop = messages.scrollHeight;
 });
 
-/* ======================================
-        PARTNER DISCONNECT
-====================================== */
+/* =============================
+       PARTNER DISCONNECT
+============================= */
 socket.on("partnerDisconnected", () => {
-    cleanupVideo();
+    fullDisconnect();
     alert("your partner disconnected :(");
     window.location.href = "/match";
 });
 
-/* ======================================
-        25-MIN POMODORO TIMER
-====================================== */
-let focusSeconds = .5 * 60;
-const timerEl = document.getElementById("timer");
+/* =============================
+         TIMER
+============================= */
+
+let focusSeconds = 0.5 * 60; // 30s for testing; change to 25 * 60 for real
 
 function updateFocusTimer() {
     const mins = String(Math.floor(focusSeconds / 60)).padStart(2, "0");
@@ -240,73 +304,65 @@ function updateFocusTimer() {
     timerEl.textContent = `${mins}:${secs}`;
 
     if (focusSeconds <= 0) {
-    cleanupVideo();
-    socket.emit("goingOnBreak", { roomId });  
-    window.location.href =
-      `/break?roomId=${encodeURIComponent(roomId)}&partnerName=${encodeURIComponent(partnerName)}&mode=video`;
-    }else {
-      focusSeconds--;
+        fullDisconnect();
+        socket.emit("goingOnBreak", { roomId });
+        window.location.href =
+          `/break?roomId=${encodeURIComponent(roomId)}&partnerName=${encodeURIComponent(partnerName)}&mode=video`;
+    } else {
+        focusSeconds--;
     }
-
 }
 
 updateFocusTimer();
 setInterval(updateFocusTimer, 1000);
 
-/* ======================================
-        WEBRTC VIDEO
-====================================== */
-let localStream;
-let peerConnection;
+/* =============================
+       WEBRTC SETUP
+============================= */
 
-const rtcConfig = {
-  iceServers: [
-    {
-      urls: "stun:global.stun.twilio.com:3478"
-    },
-    {
-      urls: "turn:global.turn.twilio.com:3478?transport=udp",
-      username: "9c48286eb70ac16f58c5f0f93bea20fc50af392934a639eb28fdbb62fc9bd860",
-      credential: "QGFX3HTGX5Bk3abs8j0/xWBBCXSppIGiaP29/PiKxXc="
-    },
-    {
-      urls: "turn:global.turn.twilio.com:3478?transport=tcp",
-      username: "9c48286eb70ac16f58c5f0f93bea20fc50af392934a639eb28fdbb62fc9bd860",
-      credential: "QGFX3HTGX5Bk3abs8j0/xWBBCXSppIGiaP29/PiKxXc="
-    },
-    {
-      urls: "turn:global.turn.twilio.com:443?transport=tcp",
-      username: "9c48286eb70ac16f58c5f0f93bea20fc50af392934a639eb28fdbb62fc9bd860",
-      credential: "QGFX3HTGX5Bk3abs8j0/xWBBCXSppIGiaP29/PiKxXc="
-    }
-  ]
+let rtcConfig = {
+    iceServers: [
+        { urls: "stun:global.stun.twilio.com:3478" },
+        {
+            urls: "turn:global.turn.twilio.com:3478?transport=udp",
+            username: "9c48286eb70ac16f58c5f0f93bea20fc9bd860",
+            credential: "QGFX3HTGX5Bk3abs8j0/xWBBCXSppIGiaP29/PiKxXc="
+        },
+        {
+            urls: "turn:global.turn.twilio.com:3478?transport=tcp",
+            username: "9c48286eb70ac16f58c5f0f93bea20fc9bd860",
+            credential: "QGFX3HTGX5Bk3abs8j0/xWBBCXSppIGiaP29/PiKxXc="
+        },
+        {
+            urls: "turn:global.turn.twilio.com:443?transport=tcp",
+            username: "9c48286eb70ac16f58c5f0f93bea20fc9bd860",
+            credential: "QGFX3HTGX5Bk3abs8j0/xWBBCXSppIGiaP29/PiKxXc="
+        }
+    ]
 };
 
-
-// gets local media and then, if caller, start the call
 async function setupLocalMedia() {
     try {
         localStream = await navigator.mediaDevices.getUserMedia({
             video: {
                 facingMode: "user",
                 width: { ideal: 1280 },
-                height: { ideal: 720 } 
+                height: { ideal: 720 }
             },
             audio: {
                 echoCancellation: true,
                 noiseSuppression: true,
                 sampleRate: 44100
             }
-    });
-        const localVideoEl = document.getElementById("localVideo");
-        
-        localVideoEl.srcObject = localStream;
+        });
 
+        localVideoEl.srcObject = localStream;
         localVideoEl.muted = true;
-        
 
         if (isCaller) {
             await startCallAsCaller();
+        } else {
+            console.log("callee: waiting for offer");
         }
     } catch (err) {
         console.error("Error accessing camera/mic:", err);
@@ -315,6 +371,8 @@ async function setupLocalMedia() {
 }
 
 function createPeerConnection() {
+    if (peerConnection) return;
+
     peerConnection = new RTCPeerConnection(rtcConfig);
 
     peerConnection.onicecandidate = (e) => {
@@ -324,7 +382,7 @@ function createPeerConnection() {
     };
 
     peerConnection.ontrack = (e) => {
-        document.getElementById("remoteVideo").srcObject = e.streams[0];
+        remoteVideoEl.srcObject = e.streams[0];
     };
 
     if (localStream) {
@@ -332,9 +390,7 @@ function createPeerConnection() {
             peerConnection.addTrack(track, localStream);
         });
     }
-    
-};
-
+}
 
 // caller: create offer
 async function startCallAsCaller() {
@@ -348,7 +404,12 @@ async function startCallAsCaller() {
 
 // callee: receive offer → create answer
 socket.on("offer", async ({ offer }) => {
-    if (isCaller) return; // caller should not re-handle offer
+    if (isCaller) return;
+
+    if (!localStream) {
+        // ensure camera is ready before responding
+        await setupLocalMedia();
+    }
 
     createPeerConnection();
 
@@ -362,9 +423,8 @@ socket.on("offer", async ({ offer }) => {
 
 // caller: receive answer
 socket.on("answer", async ({ answer }) => {
-    if (peerConnection) {
-        await peerConnection.setRemoteDescription(answer);
-    }
+    if (!peerConnection) return;
+    await peerConnection.setRemoteDescription(answer);
 });
 
 // both: handle ICE candidates
@@ -378,34 +438,30 @@ socket.on("iceCandidate", async ({ candidate }) => {
     }
 });
 
-// cleanup function, no socket emits
-function cleanupVideo() {
-    if (peerConnection) {
-        peerConnection.close();
-        peerConnection = null;
+// unload cleanup
+window.addEventListener("beforeunload", fullDisconnect);
+
+ if (localVideoEl) {
+        localVideoEl.srcObject = null;
+        localVideoEl.removeAttribute("srcObject");
+        localVideoEl.load();   // forces video element reset on mobile
     }
 
-    if (localStream) {
-        localStream.getTracks().forEach((t) => t.stop());
-        localStream = null;
+    if (remoteVideoEl) {
+        remoteVideoEl.srcObject = null;
+        remoteVideoEl.removeAttribute("srcObject");
+        remoteVideoEl.load();
     }
-
-    document.getElementById("localVideo").srcObject = null;
-    document.getElementById("remoteVideo").srcObject = null;
-}
-
-// on page unload, just clean up locally;
-// socket disconnect will notify partner via server
-window.addEventListener("beforeunload", cleanupVideo);
-
-// starts camera/mic
+    
+// start camera/mic
 if (isCaller) {
     setupLocalMedia();
 } else {
-    // other browsers fix: delay callee media start to avoid camera startup conflict
+    // slight delay for callee so caller can be ready
     setTimeout(() => setupLocalMedia(), 300);
 }
-
 </script>
+
+
 </body>
 </html>

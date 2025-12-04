@@ -16,12 +16,22 @@ router.get("/", homeController.getIndex);
 // router.get("/profile", ensureAuth, postsController.getProfile);
 // router.get("/feed", ensureAuth, postsController.getFeed);
 
+
 // Auth Routes
 router.get("/login", authController.getLogin);
 router.post("/login", authController.postLogin);
 router.get("/logout", authController.logout);
 router.get("/signup", authController.getSignup);
 router.post("/signup", authController.postSignup);
+
+router.get('/about', (req, res) => {
+    res.render('aboutCreater');
+});
+
+router.get('/pomodoroPage', (req, res) => {
+    res.render('pomodoroAbout');
+});
+
 
 // User Filters
 router.get("/filters", ensureAuth, (req, res) => {
@@ -71,5 +81,6 @@ router.get("/break", ensureAuth, authController.getBreak);
 router.post("/match", ensureAuth, (req, res) => {
   return res.redirect("/match");
 });
+
 
 module.exports = router;

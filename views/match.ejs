@@ -1,8 +1,8 @@
 <%- include('partials/loggedInHeader') -%>
 
-<main class="match-page">
-    <div class="card" style="text-align: center; padding: 50px;">
-    <h1>finding your BODY/DOUBLE...</h1>
+<main style="display: flex; justify-content: center; align-items: center; padding: 0px; margin-top: 250px;" class="match-page">
+    <div class="card" style="text-align: center; ">
+    <h1>finding your <span style="color: #333294; font-weight: bold;">BODY</span><span style=" font-weight: bold; ">/</span><span style="color: #bfa1ff; font-weight: bold;">DOUBLE</span>...</h1>
     <p id="status">connecting you with a partner who matches your prefrences</p>
     </div>
 </main>
@@ -33,31 +33,23 @@
     });
 
     socket.on("matchFound", ({ roomId, partner, isCaller }) => {
-        const myCamera = "<%= filters.camera %>"; //on or off
+    const myCamera = "<%= filters.camera %>"; // "on" or "off"
 
-        statusEl.innerHTML = `
-            matched with <strong>${partner.userName}</strong><br><br>
-            <button id="enterRoomBtn" style="
-                padding: 12px 24px;
-                background: #bfa0fe;
-                border: none;
-                border-radius: 12px;
-                font-size: 20px;
-                cursor: pointer;
-                font-weight: bold;
-            ">
-                enter room
-            </button>
-        `;
+    statusEl.innerHTML = `
+        matched with <strong>${partner.userName}</strong><br>
+        connecting you now...
+    `;
 
-        document.getElementById("enterRoomBtn").addEventListener("click", () => {
-            if (myCamera === "on") {
-                window.location.href =
+    // automatically redirect after delay for UI feedback
+    setTimeout(() => {
+        if (myCamera === "on") {
+            window.location.href =
                 `/videoChat/${roomId}?partnerName=${encodeURIComponent(partner.userName)}&isCaller=${isCaller}`;
-            } else {
-                window.location.href = 
+        } else {
+            window.location.href =
                 `/textChat/${roomId}?partnerName=${encodeURIComponent(partner.userName)}`;
-            }
-        });
-    });
+        }
+    }, 600);
+});
+
 </script>

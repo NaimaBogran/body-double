@@ -1,19 +1,19 @@
 <%- include ('partials/loggedInHeader') -%>
 
-<section>
-<div class="card">
+<section style="margin-top: 150px;">
+<div style="text-align: center;" >
 <form action="/filters" method="POST">
   <h2>what are you working on?</h2>
-  <label><input type="checkbox" name="workType" value="studying"> Studying</label>
-  <label><input type="checkbox" name="workType" value="coding"> Coding</label>
-  <label><input type="checkbox" name="workType" value="writing"> Writing</label>
-  <label><input type="checkbox" name="workType" value="editing"> Editing</label>
+  <label><input type="checkbox" name="workType" value="studying">studying</label>
+  <label><input type="checkbox" name="workType" value="coding"> coding</label>
+  <label><input type="checkbox" name="workType" value="writing"> writing</label>
+  <label><input type="checkbox" name="workType" value="editing"> editing</label>
 
   <h2>what's your camera preference?</h2>
-  <label><input type="radio" name="camera" value="on" required> Camera On</label>
-  <label><input type="radio" name="camera" value="off" required> Camera Off</label>
+  <label><input type="radio" name="camera" value="on" required> camera on</label>
+  <label><input type="radio" name="camera" value="off" required> camera off</label>
 
-  <button class="btn btn-primary" type="submit">find your BODY/DOUBLE</button>
+  <button style="display: block; text-align: center;  margin: 0 auto; margin-top: 20px; margin-bottom: 50px;" class="btn btn-primary" type="submit">find your BODY/DOUBLE</button>
 </form>
 </div>
 </section>
