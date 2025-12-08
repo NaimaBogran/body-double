@@ -51,12 +51,17 @@ app.use(methodOverride("_method"));
 // Setup Sessions - stored in MongoDB
 app.use(
   session({
-    secret: "keyboard cat",
+    secret: process.env.SESSION_SECRET || "dev-secret-change-me",
     resave: false,
     saveUninitialized: false,
     store: new MongoStore({ mongooseConnection: mongoose.connection }),
+    cookie: {
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+    },
   })
 );
+
 
 // Passport middleware
 app.use(passport.initialize());
@@ -285,7 +290,7 @@ socket.on("leavingSession", ({ roomId }) => {
 // =============================
 //         START SERVER
 // =============================
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3000;
 
 server.listen(PORT, () => {
   console.log("Server is running, you better catch it!");
